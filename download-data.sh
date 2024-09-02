@@ -601,6 +601,10 @@ if [[ "$STEPS" = *clinvar* ]]; then
       $DATA_DIR/annonars/grch37/clinvar-sv
     ln -sr $DATA_DIR/download/annonars/annonars-clinvar-sv-grch38-$V_ANNONARS_DATA_CLINVAR_CLINVAR+$V_ANNONARS_DATA_CLINVAR_ANNONARS \
       $DATA_DIR/annonars/grch38/clinvar-sv
+
+    rm -rf $DATA_DIR/mehari/{grch37,grch38}/seqvars/clinvar
+    ln -sr $DATA_DIR/annonars/grch37/clinvar $DATA_DIR/mehari/grch37/seqvars/clinvar
+    ln -sr $DATA_DIR/annonars/grch38/clinvar $DATA_DIR/mehari/grch38/seqvars/clinvar
 fi
 
 if [[ "$STEPS" = *dotty* ]]; then
