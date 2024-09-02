@@ -48,7 +48,7 @@ export V_ANNONARS_GENES=${V_ANNONARS_GENES-0.34.0}
 # viguno
 export V_VIGUNO=${V_VIGUNO-0.2.0}
 # VarFish Worker
-export V_WORKER=${V_WORKER-0.10.2}
+export V_WORKER=${V_WORKER-0.13.0}
 
 # CADD
 export V_CADD=${V_CADD-1.6}
@@ -107,7 +107,7 @@ export V_CLINGEN_REGIONS=${V_CLINGEN_REGIONS-20240105}
 # Mehari Gene ID Xlink
 export V_MEHARI_XLINK=${V_MEHARI_XLINK-20240105}
 # Mehari Transcripts
-export V_MEHARI_TXS=${V_MEHARI_TXS-0.6.1}
+export V_MEHARI_TXS=${V_MEHARI_TXS-0.7.5}
 
 # dbVar version
 export V_DBVAR=${V_DBVAR-20231030}
@@ -431,13 +431,13 @@ EOF
     mkdir -p $DATA_DIR/worker/grch3{7,8}/strucvars/bgdbs
 
     log_info "  - strucvars/bgdbs"
-    rm -f $DATA_DIR/worker/grch3{7,8}/strucvars/bgdbs/{exac,g1k,gnomad,dbvar,dgv,dgv-gs}.bin
+    rm -f $DATA_DIR/worker/grch3{7,8}/strucvars/bgdbs/{exac,g1k,gnomad,dbvar,dgv,dgv-gs,dgv_gs,gnomad_exomes,gnomad_genomes}.bin
     ln -sr $(echo $DATA_DIR/download/worker/bgdb-exac-grch37-*/bgdb-exac.bin | tr ' ' '\n' | tail -n 1) \
-      $DATA_DIR/worker/grch37/strucvars/bgdbs/exac.bin
-    ln -sr $(echo $DATA_DIR/download/worker/bgdb-g1k-grch37-$V_G1K+$V_WORKER/bgdb-g1k.bin | tr ' ' '\n' | tail -n 1) \
+      $DATA_DIR/worker/grch37/strucvars/bgdbs/gnomad_exomes.bin
+    ln -sr $(echo $DATA_DIR/download/worker/bgdb-g1k-grch37-*/bgdb-g1k.bin | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/grch37/strucvars/bgdbs/g1k.bin
     ln -sr $(echo $DATA_DIR/download/worker/bgdb-gnomad-grch37-*/bgdb-gnomad.bin | tr ' ' '\n' | tail -n 1) \
-      $DATA_DIR/worker/grch37/strucvars/bgdbs/gnomad.bin
+      $DATA_DIR/worker/grch37/strucvars/bgdbs/gnomad_genomes.bin
     ln -sr $(echo $DATA_DIR/download/worker/bgdb-dbvar-grch37-*/bgdb-dbvar.bin | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/grch37/strucvars/bgdbs/dbvar.bin
     ln -sr $(echo $DATA_DIR/download/worker/bgdb-dbvar-grch38-*/bgdb-dbvar.bin | tr ' ' '\n' | tail -n 1) \
@@ -447,9 +447,9 @@ EOF
     ln -sr $(echo $DATA_DIR/download/worker/bgdb-dgv-grch38-*/bgdb-dgv.bin | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/grch38/strucvars/bgdbs/dgv.bin
     ln -sr $(echo $DATA_DIR/download/worker/bgdb-dgv-gs-grch37-*/bgdb-dgv-gs.bin | tr ' ' '\n' | tail -n 1) \
-      $DATA_DIR/worker/grch37/strucvars/bgdbs/dgv-gs.bin
+      $DATA_DIR/worker/grch37/strucvars/bgdbs/dgv_gs.bin
     ln -sr $(echo $DATA_DIR/download/worker/bgdb-dgv-gs-grch38-*/bgdb-dgv-gs.bin | tr ' ' '\n' | tail -n 1) \
-      $DATA_DIR/worker/grch38/strucvars/bgdbs/dgv-gs.bin
+      $DATA_DIR/worker/grch38/strucvars/bgdbs/dgv_gs.bin
 
     log_info "  - strucvars/clinvar"
     rm -f $DATA_DIR/worker/grch3{7,8}/strucvars/clinvar.bin
@@ -460,12 +460,12 @@ EOF
       $DATA_DIR/worker/grch38/strucvars/clinvar.bin
 
     log_info "  - strucvars/patho-mms"
-    rm -f $DATA_DIR/worker/grch3?/strucvars/patho-mms.bed
+    rm -f $DATA_DIR/worker/grch3?/strucvars/patho?mms.bed
 
     ln -sr $(ls $DATA_DIR/download/worker/patho-mms-grch37-*/patho-mms.bed | tr ' ' '\n' | tail -n 1) \
-      $DATA_DIR/worker/grch37/strucvars/patho-mms.bed
+      $DATA_DIR/worker/grch37/strucvars/patho_mms.bed
     ln -sr $(ls $DATA_DIR/download/worker/patho-mms-grch38-*/patho-mms.bed | tr ' ' '\n' | tail -n 1) \
-      $DATA_DIR/worker/grch38/strucvars/patho-mms.bed
+      $DATA_DIR/worker/grch38/strucvars/patho_mms.bed
 
     log_info "  - strucvars/tads"
     mkdir -p $DATA_DIR/worker/grch3{7,8}/tads
@@ -542,10 +542,10 @@ if [[ "$STEPS" = *mehari* ]]; then
 
     mkdir -p $DATA_DIR/download/mehari-data-txs-grch3{7,8}
 
-    for ext in .zst .zst.sha256 .zst.report .zst.report.sha256; do
+    for ext in .zst .zst.sha256 .zst.report.jsonl .zst.report.jsonl.sha256; do
       for release in grch37 grch38; do
         wget -q -c -O $DATA_DIR/download/mehari-data-txs-$release/mehari-data-txs-$release-$V_MEHARI_TXS.bin$ext \
-          https://github.com/bihealth/mehari-data-tx/releases/download/v$V_MEHARI_TXS/mehari-data-txs-$release-$V_MEHARI_TXS.bin$ext
+          https://github.com/bihealth/mehari-data-tx/releases/download/v$V_MEHARI_TXS/mehari-data-txs-$release-refseq-$V_MEHARI_TXS.bin$ext
       done
     done
 
