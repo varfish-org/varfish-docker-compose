@@ -46,7 +46,7 @@ export V_ANNONARS=${V_ANNONARS-0.33.0}
 # annonars for annonars/genes
 export V_ANNONARS_GENES=${V_ANNONARS_GENES-0.34.0}
 # viguno
-export V_VIGUNO=${V_VIGUNO-0.2.0}
+export V_VIGUNO=${V_VIGUNO-0.3.1}
 # VarFish Worker
 export V_WORKER=${V_WORKER-0.13.0}
 
@@ -74,7 +74,7 @@ export V_ACMG_SF=${V_ACMG_SF-3.1}
 # gnomAD constraints
 export V_GNOMAD_CONSTRAINTS=${V_GNOMAD_CONSTRAINTS-4.0}
 # HPO release
-export V_HPO=${V_HPO-20230606}
+export V_HPO=${V_HPO-20240116}
 # OrphaPackets release
 export V_ORPHAPACKETS=${V_ORPHAPACKETS-10.1}
 # VarFish DB Download Data
