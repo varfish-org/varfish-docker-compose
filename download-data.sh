@@ -26,11 +26,13 @@ export DIR_PREFIX=${DIR_PREFIX-.dev}
 # Overall static data directory.
 export DATA_DIR=${DATA_DIR-$DIR_PREFIX/volumes/$STATIC_INFIX/data}
 # S3 endpoing URL.
-export S3_ENDPOINT_URL=https://ceph-s3-public.cubi.bihealth.org
+export S3_ENDPOINT_URL=${S3_ENDPOINT_URL-https://ceph-s3-public.cubi.bihealth.org}
 # Grep regex expression for downloading data.
 export LIST_GREP=${LIST_GREP-}
 # Steps to execute
-export STEPS=${STEPS-s3_sync,mehari,dotty,clinvar,cada}
+# dotty not needed for varfish
+# export STEPS=${STEPS-s3_sync,mehari,dotty,clinvar,cada}
+export STEPS=${STEPS-s3_sync,mehari,clinvar,cada}
 
 # Set S5CMD_NO_VERIFY_SSL_ARG based on NO_VERIFY_SSL
 if [ "$NO_VERIFY_SSL" -eq 1 ]; then
@@ -42,11 +44,11 @@ fi
 # -- Versions -----------------------------------------------------------------
 
 # annonars
-export V_ANNONARS=${V_ANNONARS-0.33.0}
+export V_ANNONARS=${V_ANNONARS-0.39.0}
 # annonars for annonars/genes
-export V_ANNONARS_GENES=${V_ANNONARS_GENES-0.34.0}
+export V_ANNONARS_GENES=${V_ANNONARS_GENES-0.39.0}
 # viguno
-export V_VIGUNO=${V_VIGUNO-0.2.0}
+export V_VIGUNO=${V_VIGUNO-0.3.1}
 # VarFish Worker
 export V_WORKER=${V_WORKER-0.13.0}
 
@@ -72,37 +74,37 @@ export V_REFSEQ_GRCH38=${V_REFSEQ_GRCH38-110}
 # ACMG SF list
 export V_ACMG_SF=${V_ACMG_SF-3.1}
 # gnomAD constraints
-export V_GNOMAD_CONSTRAINTS=${V_GNOMAD_CONSTRAINTS-4.0}
+export V_GNOMAD_CONSTRAINTS=${V_GNOMAD_CONSTRAINTS-4.1}
 # HPO release
-export V_HPO=${V_HPO-20230606}
+export V_HPO=${V_HPO-20240116}
 # OrphaPackets release
 export V_ORPHAPACKETS=${V_ORPHAPACKETS-10.1}
 # VarFish DB Download Data
-export V_VARFISHDB=${V_VARFISHDB-20240105}
+export V_VARFISHDB=${V_VARFISHDB-20240711}
 # VarFish DB Download Data for annonars/genes
 export V_VARFISHDB_ANNONARS_GENES=${V_VARFISHDB_ANNONARS_GENES-20240306}
 # gnomAD exomes GRCh37
 export V_GNOMAD_EXOMES_GRCH37=${V_GNOMAD_EXOMES_GRCH37-2.1.1}
 # gnomAD exomes GRCh38
-export V_GNOMAD_EXOMES_GRCH38=${V_GNOMAD_EXOMES_GRCH38-4.0}
+export V_GNOMAD_EXOMES_GRCH38=${V_GNOMAD_EXOMES_GRCH38-4.1}
 # gnomAD genomes GRCh37
 export V_GNOMAD_GENOMES_GRCH37=${V_GNOMAD_GENOMES_GRCH37-2.1.1}
 # gnomAD genomes GRCh38
-export V_GNOMAD_GENOMES_GRCH38=${V_GNOMAD_GENOMES_GRCH38-4.0}
+export V_GNOMAD_GENOMES_GRCH38=${V_GNOMAD_GENOMES_GRCH38-4.1}
 # gnomAD mtDNA
 export V_GNOMAD_MT=${V_GNOMAD_MT-3.1}
 # gnomAD SVs exomes GRCh37 (== ExAC)
 export V_GNOMAD_EXOMES_SVS_GRCH37=${V_GNOMAD_EXOMES_SVS_GRCH37-0.3.1}
 # gnomAD SVs exomes GRCh38
-export V_GNOMAD_EXOMES_SVS_GRCH38=${V_GNOMAD_EXOMES_SVS_GRCH38-4.0}
+export V_GNOMAD_EXOMES_SVS_GRCH38=${V_GNOMAD_EXOMES_SVS_GRCH38-4.1}
 # gnomAD SV genomes GRCh37
 export V_GNOMAD_GENOMES_SV_GRCH37=${V_GNOMAD_GENOMES_SV_GRCH37-2.1.1}
 # gnomAD SV genomes GRCh38
-export V_GNOMAD_GENOMES_SV_GRCH38=${V_GNOMAD_GENOMES_SV_GRCH38-4.0}
+export V_GNOMAD_GENOMES_SV_GRCH38=${V_GNOMAD_GENOMES_SV_GRCH38-4.1}
 # HelixMtDB
 export V_HELIXMTDB=${V_HELIXMTDB-20200327}
 # ClinGen Regions
-export V_CLINGEN_REGIONS=${V_CLINGEN_REGIONS-20240105}
+export V_CLINGEN_REGIONS=${V_CLINGEN_REGIONS-20240711}
 
 # Mehari Gene ID Xlink
 export V_MEHARI_XLINK=${V_MEHARI_XLINK-20240105}
@@ -193,9 +195,8 @@ log_error()
 #   prefix_for annonars/cadd-grch37-1.6+0.29.1
 prefix_for()
 {
-    for prefix in annonars/cadd annonars/cons annonars/dbnsfp annonars/dbscsnv \
-            annonars/dbsnp annonars/gnomad-exomes annonars/gnomad-genomes \
-            mehari/freqs viguno/hpo; do
+    for prefix in annonars/cadd annonars/dbnsfp annonars/dbsnp annonars/gnomad-exomes \
+        annonars/gnomad-genomes mehari/freqs; do
         if [[ $1 == $prefix* ]]; then
             # have reduced
             echo $DOWNLOAD
@@ -235,7 +236,7 @@ annonars/dbsnp-grch37-$V_DBSNP+$V_ANNONARS
 annonars/dbsnp-grch38-$V_DBSNP+$V_ANNONARS
 annonars/functional-grch37-$V_REFSEQ_GRCH37+$V_ANNONARS
 annonars/functional-grch38-$V_REFSEQ_GRCH38+$V_ANNONARS
-annonars/genes-$V_ACMG_SF+$V_GNOMAD_CONSTRAINTS+$V_DBNSFP_NO_SUFFIX+$V_HPO+$V_ORPHAPACKETS+$V_VARFISHDB+$V_ANNONARS
+annonars/genes-$V_ACMG_SF+$V_GNOMAD_CONSTRAINTS+$V_DBNSFP_NO_SUFFIX+$V_HPO+$V_VARFISHDB+$V_ANNONARS_GENES
 annonars/gnomad-exomes-grch37-$V_GNOMAD_EXOMES_GRCH37+$V_ANNONARS
 annonars/gnomad-exomes-grch38-$V_GNOMAD_EXOMES_GRCH38+$V_ANNONARS
 annonars/gnomad-genomes-grch37-$V_GNOMAD_EXOMES_GRCH37+$V_ANNONARS
@@ -294,7 +295,7 @@ EOF
 
     rm -f $DATA_DIR/annonars/genes
     ln -sr \
-        $DATA_DIR/download/annonars/genes-$V_ACMG_SF+$V_GNOMAD_CONSTRAINTS+$V_DBNSFP_NO_SUFFIX+$V_HPO+$V_ORPHAPACKETS+$V_VARFISHDB+$V_ANNONARS \
+        $DATA_DIR/download/annonars/genes-$V_ACMG_SF+$V_GNOMAD_CONSTRAINTS+$V_DBNSFP_NO_SUFFIX+$V_HPO+$V_VARFISHDB+$V_ANNONARS_GENES \
         $DATA_DIR/annonars/genes
 
     # cadd - GRCh37
@@ -415,16 +416,18 @@ EOF
 
     # xlink
     rm -f $DATA_DIR/hgnc_xlink.tsv
-    ln -sr \
-        $DATA_DIR/download/mehari/genes-xlink-$V_VARFISHDB/genes-xlink.tsv \
+    cp \
+        $DATA_DIR/download/mehari/genes-xlink-$V_MEHARI_XLINK/genes-xlink.tsv \
         $DATA_DIR/hgnc_xlink.tsv
     # hpo
-    rm -f $DATA_DIR/hpo
+    rm -f \
+        $DATA_DIR/hpo \
+        $DATA_DIR/download/viguno/hpo-$V_HPO+$V_VIGUNO/hgnc_xlink.tsv
     ln -sr \
         $DATA_DIR/download/viguno/hpo-$V_HPO+$V_VIGUNO \
         $DATA_DIR/hpo
-    ln -sr \
-        $DATA_DIR/download/mehari/genes-xlink-$V_VARFISHDB/genes-xlink.tsv \
+    cp \
+        $DATA_DIR/download/mehari/genes-xlink-$V_MEHARI_XLINK/genes-xlink.tsv \
         $DATA_DIR/download/viguno/hpo-$V_HPO+$V_VIGUNO/hgnc_xlink.tsv
 
     log_info "- worker"
