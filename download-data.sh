@@ -481,14 +481,14 @@ EOF
 
     log_info "  - noref/genes"
     mkdir -p $DATA_DIR/worker/noref/genes
-    rm -f $DATA_DIR/worker/noref/genes/{xlink.bin,acmg.tsv,mime2gene.tsv}
+    rm -f $DATA_DIR/worker/noref/genes/{xlink.bin,acmg.tsv,mim2gene.tsv}
 
     ln -sr $(ls $DATA_DIR/download/worker/genes-xlink-*/genes-xlink.bin | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/noref/genes/xlink.bin
     ln -sr $(ls $DATA_DIR/download/worker/acmg-sf-*/acmg_sf.tsv | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/noref/genes/acmg.tsv
     ln -sr $(ls $DATA_DIR/download/worker/mim2gene-*/mim2gene.tsv | tr ' ' '\n' | tail -n 1) \
-      $DATA_DIR/worker/noref/genes/mime2gene.tsv
+      $DATA_DIR/worker/noref/genes/mim2gene.tsv
 
     log_info "  - grch3{7,8}/regions"
     mkdir -p $DATA_DIR/worker/grch3{7,8}/genes
