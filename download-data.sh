@@ -506,12 +506,14 @@ EOF
 
     log_info "  - grch3{7,8}/features"
     mkdir -p $DATA_DIR/worker/grch3{7,8}/features
-    rm -f $DATA_DIR/worker/grch3?/features/{masked_repeat.bin,masked_seqdup.bin}
+    rm -f $DATA_DIR/worker/grch3?/features/{masked_repeat.bin,masked_se.dup.bin}
 
     ln -sr $(ls $DATA_DIR/download/worker/masked-repeat-grch37-*/masked-repeat.bin | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/grch37/features/masked_repeat.bin
     ln -sr $(ls $DATA_DIR/download/worker/masked-segdup-grch37-*/masked-segdup.bin | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/grch37/features/masked_seqdup.bin
+    ln -sr $(ls $DATA_DIR/download/worker/masked-segdup-grch37-*/masked-segdup.bin | tr ' ' '\n' | tail -n 1) \
+      $DATA_DIR/worker/grch37/features/masked_segdup.bin
 
     ln -sr $(ls $DATA_DIR/download/worker/masked-repeat-grch38-*/masked-repeat.bin | tr ' ' '\n' | tail -n 1) \
       $DATA_DIR/worker/grch38/features/masked_repeat.bin
