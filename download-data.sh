@@ -46,7 +46,7 @@ fi
 # annonars
 export V_ANNONARS=${V_ANNONARS-0.39.0}
 # annonars for annonars/genes
-export V_ANNONARS_GENES=${V_ANNONARS_GENES-0.39.0}
+export V_ANNONARS_GENES=${V_ANNONARS_GENES-0.41.3}
 # viguno
 export V_VIGUNO=${V_VIGUNO-0.3.1}
 # VarFish Worker
