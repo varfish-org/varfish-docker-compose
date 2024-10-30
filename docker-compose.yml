@@ -128,10 +128,16 @@ services:
     command: ["celeryd"]
     environment: ["CELERY_QUEUES=query", "CELERY_WORKERS=16"]
     volumes:
+      # Read-only static data.
       - type: bind
         source: ${volumes_basedir:-./.dev/volumes}/varfish-static/data
         target: /data/varfish-static/data
         read_only: true
+      # Writeable data directory.
+      - type: bind
+        source: ${volumes_basedir:-./.dev/volumes}/varfish-dynamic/data
+        target: /data/varfish-dynamic/data
+        read_only: false
 
   varfish-celeryd-export:
     <<: *service_varfish_server_default

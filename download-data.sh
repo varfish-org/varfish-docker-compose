@@ -21,10 +21,14 @@ export NO_VERIFY_SSL=${NO_VERIFY_SSL-0}
 export DOWNLOAD=${DOWNLOAD-reduced-dev}
 # Directory for static data.
 export STATIC_INFIX=${STATIC_INFIX-varfish-static}
+# Directory for dynamic data.
+export DYNAMIC_INFIX=${DYNAMIC_INFIX-varfish-dynamic}
 # Overall directory prefix.
 export DIR_PREFIX=${DIR_PREFIX-.dev}
 # Overall static data directory.
 export DATA_DIR=${DATA_DIR-$DIR_PREFIX/volumes/$STATIC_INFIX/data}
+# Overall dynamic data directory.
+export DATA_DIR_DYNAMIC=${DATA_DIR-$DIR_PREFIX/volumes/$DYNAMIC_INFIX/data}
 # S3 endpoing URL.
 export S3_ENDPOINT_URL=${S3_ENDPOINT_URL-https://ceph-s3-public.cubi.bihealth.org}
 # Grep regex expression for downloading data.
@@ -216,6 +220,9 @@ run()
         echo "$@"
     fi
 }
+
+# Create dynamic data directory.
+run mkdir -p $DATA_DIR_DYNAMIC
 
 # -- Downloading --------------------------------------------------------------
 
