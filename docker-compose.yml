@@ -14,13 +14,11 @@ x-service-default: &service_default
 #
 # We provide the /data directory as read-only to all services as this
 # simplifies the configuration considerably.
-x-service-varfish-static-data-default: &service_static_data_default
-  <<: *service_default
-  volumes:
-    - type: bind
-      source: ${volumes_basedir:-./.dev/volumes}/varfish-static/data
-      target: /data
-      read_only: true
+x-varfish-static-data-default: &static_data_default
+  type: bind
+  source: ${volumes_basedir:-./.dev/volumes}/varfish-static/data
+  target: /data
+  read_only: true
 
 # Default service definition for services with the `varfish-server` image.
 x-service-varfish-server-default: &service_varfish_server_default
@@ -183,11 +181,14 @@ services:
   # Mehari provides the transcript-related information.
 
   mehari:
-    <<: *service_static_data_default
+    <<: *service_default
     container_name: mehari
     hostname: mehari
     image: "${image_base:-ghcr.io/varfish-org}/${image_mehari_name:-mehari}:\
       ${image_mehari_version:-latest}"
+    volumes:
+      - *static_data_default
+      - ./utils/mehari/entrypoint.sh:/entrypoint.sh
 
   # -- Viguno ----------------------------------------------------------------
   #
@@ -195,22 +196,26 @@ services:
   # information..
 
   viguno:
-    <<: *service_static_data_default
+    <<: *service_default
     container_name: viguno
     hostname: viguno
     image: "${image_base:-ghcr.io/varfish-org}/${image_viguno_name:-viguno}:\
       ${image_viguno_version:-latest}"
+    volumes:
+      - *static_data_default
 
   # -- Annonars ---------------------------------------------------------------
   #
   # Annonars provides the variant information but also the gene information.
 
   annonars:
-    <<: *service_static_data_default
+    <<: *service_default
     container_name: annonars
     hostname: annonars
     image: "${image_base:-ghcr.io/varfish-org}/\
       ${image_annonars_name:-annonars}:${image_annonars_version:-latest}"
+    volumes:
+      - *static_data_default
 
   # -- PostgreSQL Server -----------------------------------------------------
   #
