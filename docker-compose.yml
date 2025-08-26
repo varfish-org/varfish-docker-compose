@@ -1,7 +1,4 @@
 ---
-
-version: "3.9"
-
 # == Re-useable Definitions ==================================================
 
 # Default service definition for all (incl. postgres/redis/...)
