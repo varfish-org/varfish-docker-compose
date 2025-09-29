@@ -257,7 +257,7 @@ services:
     <<: *service_default
     container_name: minio
     hostname: minio
-    image: "${image_minio_name:-quay.io/minio/minio}:\
+    image: "${image_minio_name:-minio/minio}:\
       ${image_minio_version:-latest}"
     command:
       - server
@@ -296,7 +296,7 @@ services:
     hostname: minio-client
     depends_on:
       - minio  # start after the server
-    image: "${image_mc_name:-bitnami/minio-client}:\
+    image: "${image_mc_name:-minio/mc}:\
       ${image_mc_version:-latest}"
     # Run with custom entrypoint that sets the alias "minio" with admin
     # credentials, ensures that the "varfish" user and "varfish-server"
